@@ -82,6 +82,11 @@ public final class PlayerDeathListener implements Listener {
         double healthPerNaturalDeath = plugin.getConfig().getInt("heartsPerNaturalDeath") * 2;
         double healthToLoose = isDeathByPlayer ? healthPerKill : healthPerNaturalDeath;
 
+        // Bei 4 Herzen (8 HP) keinen weiteren Herzverlust zulassen
+        if (playerData.getMaxHealth() <= 8.0) {
+            return;
+        }
+
         // Check bypass first (takes priority over grace period)
         boolean victimHasBypass = restrictedHeartLossByBypass(player);
         boolean killerHasBypass = isDeathByPlayer && killer != null && restrictedHeartGainByBypass(killer);
